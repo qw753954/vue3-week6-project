@@ -73,11 +73,13 @@ export default {
       const url = `${process.env.VUE_APP_URL}/api/${process.env.VUE_APP_PATH}/products?page=${page}`;
       this.axios.get(url)
         .then((res) => {
-          console.log(res);
-          if (!res.data.success) return;
-          this.products = res.data.products;
-          this.pagination = res.data.pagination;
-          this.isLoading = false;
+          if (res.data.success) {
+            this.products = res.data.products;
+            this.pagination = res.data.pagination;
+            this.isLoading = false;
+          } else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => {
           console.dir(err);
@@ -95,9 +97,12 @@ export default {
       const url = `${process.env.VUE_APP_URL}/api/${process.env.VUE_APP_PATH}/cart`;
       this.axios.post(url, data)
         .then((res) => {
-          if (!res.data.success) return;
-          this.loadingBtn.addCart = '';
-          this.opanIFmodal(res.data.message);
+          if (res.data.success) {
+            this.loadingBtn.addCart = '';
+            this.opanIFmodal(res.data.message);
+          } else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => {
           console.dir(err);

@@ -115,7 +115,7 @@ export default {
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          console.dir(err);
         });
     },
     updateProduct(isNew, product) {
@@ -133,15 +133,16 @@ export default {
       }
       this.axios[httpMethod](url, { data: product })
         .then((res) => {
-          console.log(res);
-          if (!res.data.success) {
+          if (res.data.success) {
+            this.$refs.productModal.hideModal();
+            this.getProduct();
+          } else {
             alert(res.data.message);
-            return;
+            this.isLoading = false;
           }
-          this.getProduct();
         })
         .catch((err) => {
-          console.log(err.response);
+          console.dir(err);
         });
     },
     delProduct(id) {
@@ -149,11 +150,15 @@ export default {
       const url = `${process.env.VUE_APP_URL}/api/${process.env.VUE_APP_PATH}/admin/product/${id}`;
       this.axios.delete(url)
         .then((res) => {
-          if (!res.data.success) return;
-          this.getProduct();
+          if (res.data.success) {
+            this.getProduct();
+          } else {
+            alert(res.data.message);
+            this.isLoading = false;
+          }
         })
         .catch((err) => {
-          console.log(err.response);
+          console.dir(err);
         });
     },
     openModal(type, item) {

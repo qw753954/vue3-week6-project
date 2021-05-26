@@ -156,7 +156,6 @@ export default {
   methods: {
     triggerFn() {
       this.$emit('emitUpdate', this.isNew, this.nowProduct);
-      this.hideModal();
     },
     openModal() {
       this.modal.show();

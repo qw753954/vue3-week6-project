@@ -67,10 +67,16 @@ export default {
     const url = `${process.env.VUE_APP_URL}/api/${process.env.VUE_APP_PATH}/product/${id}`;
     this.axios.get(url)
       .then((res) => {
-        console.log(res);
-        this.product = res.data.product;
-        document.title = this.product.title;
-        this.isLoading = false;
+        if (res.data.success) {
+          this.product = res.data.product;
+          document.title = this.product.title;
+          this.isLoading = false;
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.dir(err);
       });
   },
   methods: {
@@ -89,11 +95,13 @@ export default {
       const url = `${process.env.VUE_APP_URL}/api/${process.env.VUE_APP_PATH}/cart`;
       this.axios.post(url, data)
         .then((res) => {
-          console.log('addToCart2', res);
-          if (!res.data.success) return;
-          this.loadingBtn.addCart = '';
-          this.opanIFmodal(res.data.message);
-          this.qty = 1;
+          if (res.data.success) {
+            this.loadingBtn.addCart = '';
+            this.opanIFmodal(res.data.message);
+            this.qty = 1;
+          } else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => {
           console.dir(err);

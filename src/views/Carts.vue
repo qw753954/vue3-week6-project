@@ -184,13 +184,16 @@ export default {
       this.axios.delete(url)
         .then((res) => {
           // this.loadingBtn.delCart = id; 不能放這
-          if (!res.data.success) return;
-          this.getCart();
-          this.loadingBtn.delCart = '';
-          this.opanIFmodal(res.data.message);
+          if (res.data.success) {
+            this.getCart();
+            this.loadingBtn.delCart = '';
+            this.opanIFmodal(res.data.message);
+          } else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => {
-          alert(err.data.message);
+          console.dir(err);
         });
     },
     // 表單驗證 + 送出
@@ -215,7 +218,7 @@ export default {
           this.getCart();
         })
         .catch((err) => {
-          console.log(err.response);
+          console.dir(err);
         });
     },
     isPhone(value) {
