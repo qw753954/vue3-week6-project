@@ -74,7 +74,8 @@ export default {
       }
     },
     logout() {
-      document.cookie = 'token=;expires=;';
+      document.cookie = 'token=; expires=; path=/';
+      document.cookie = 'user_id=; expires=; path=/';
       alert('已成功登出，即將返回首頁');
       this.$router.push('/');
     },
